@@ -1,284 +1,254 @@
-from tkinter import*
-import random
+import sqlite3
+from tkinter import *
 import time
+import random
+from tkinter import messagebox
+#import pillow
+from PIL import Image,ImageTk
 
-root = Tk()
-root.geometry("1600x700+0+0")
-root.title("Restaurant Management System")
-
-Tops = Frame(root,bg="white",width = 1600,height=50,relief=SUNKEN)
-Tops.pack(side=TOP)
-
-f1 = Frame(root,width = 900,height=700,relief=SUNKEN)
-f1.pack(side=LEFT)
-
-f2 = Frame(root ,width = 400,height=700,relief=SUNKEN)
-f2.pack(side=RIGHT)
-#------------------TIME--------------
-localtime=time.asctime(time.localtime(time.time()))
-#-----------------INFO TOP------------
-lblinfo = Label(Tops, font=( 'aria' ,30, 'bold' ),text="Restaurant Management System",fg="steel blue",bd=10,anchor='w')
-lblinfo.grid(row=0,column=0)
-lblinfo = Label(Tops, font=( 'aria' ,20, ),text=localtime,fg="steel blue",anchor=W)
-lblinfo.grid(row=1,column=0)
-
-#---------------Calculator------------------
-text_Input=StringVar()
-operator =""
-
-txtdisplay = Entry(f2,font=('ariel' ,20,'bold'), textvariable=text_Input , bd=5 ,insertwidth=7 ,bg="white",justify='right')
-txtdisplay.grid(columnspan=4)
-
-def  btnclick(numbers):
-    global operator
-    operator=operator + str(numbers)
-    text_Input.set(operator)
-
-def clrdisplay():
-    global operator
-    operator=""
-    text_Input.set("")
-
-def eqals():
-    global operator
-    sumup=str(eval(operator))
-
-    text_Input.set(sumup)
-    operator = ""
-
-def Ref():
-    x=random.randint(12980, 50876)
-    randomRef = str(x)
-    rand.set(randomRef)
-
-    cof =float(Fries.get())
-    colfries= float(Largefries.get())
-    cob= float(Burger.get())
-    cofi= float(Filet.get())
-    cochee= float(Cheese_burger.get())
-    codr= float(Drinks.get())
-
-    costoffries = cof*25
-    costoflargefries = colfries*40
-    costofburger = cob*35
-    costoffilet = cofi*50
-    costofcheeseburger = cochee*50
-    costofdrinks = codr*35
-
-    costofmeal = "Rs.",str('%.2f'% (costoffries +  costoflargefries + costofburger + costoffilet + costofcheeseburger + costofdrinks))
-    PayTax=((costoffries +  costoflargefries + costofburger + costoffilet +  costofcheeseburger + costofdrinks)*0.33)
-    Totalcost=(costoffries +  costoflargefries + costofburger + costoffilet  + costofcheeseburger + costofdrinks)
-    Ser_Charge=((costoffries +  costoflargefries + costofburger + costoffilet + costofcheeseburger + costofdrinks)/99)
-    Service="Rs.",str('%.2f'% Ser_Charge)
-    OverAllCost="Rs.",str( PayTax + Totalcost + Ser_Charge)
-    PaidTax="Rs.",str('%.2f'% PayTax)
-
-    Service_Charge.set(Service)
-    cost.set(costofmeal)
-    Tax.set(PaidTax)
-    Subtotal.set(costofmeal)
-    Total.set(OverAllCost)
+#main window GUI
+root=Tk()
+root.geometry("2000x650+0+0")
+root.title("CHATAR-PATAR")
+load=Image.open("giphy.gif")
+background_image=ImageTk.PhotoImage(load)
+background_label=Label(root,image=background_image)
+background_label.place(x=0,y=0,relheight=1,relwidth=1)
 
 
-def qexit():
-    root.destroy()
-
-def reset():
-    rand.set("")
-    Fries.set("")
-    Largefries.set("")
-    Burger.set("")
-    Filet.set("")
-    Subtotal.set("")
-    Total.set("")
-    Service_Charge.set("")
-    Drinks.set("")
-    Tax.set("")
-    cost.set("")
-    Cheese_burger.set("")
+#database
+table=sqlite3.connect("bill.db")
+#table.execute('''CREATE TABLE ORDERS(ORDER_NUMBER INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,FRIES_MEAL TEXT,LUNCH_MEAL TEXT,BURGER_MEAL TEXT,PIZZA_MEAL TEXT,CHEESE_BURGER TEXT,DRINKS TEXT,MEAL_1 TEXT,MEAL_2 TEXT,COST TEXT,SERVICE_CHARGE TEXT,TAX TEXT,SUBTOTAL TEXT,TOTAL TEXT);''')
+#table.commit()
 
 
-btn7=Button(f2,padx=16,pady=16,bd=4, fg="black", font=('ariel', 20 ,'bold'),text="7",bg="powder blue", command=lambda: btnclick(7) )
-btn7.grid(row=2,column=0)
-
-btn8=Button(f2,padx=16,pady=16,bd=4, fg="black", font=('ariel', 20 ,'bold'),text="8",bg="powder blue", command=lambda: btnclick(8) )
-btn8.grid(row=2,column=1)
-
-btn9=Button(f2,padx=16,pady=16,bd=4, fg="black", font=('ariel', 20 ,'bold'),text="9",bg="powder blue", command=lambda: btnclick(9) )
-btn9.grid(row=2,column=2)
-
-Addition=Button(f2,padx=16,pady=16,bd=4, fg="black", font=('ariel', 20 ,'bold'),text="+",bg="powder blue", command=lambda: btnclick("+") )
-Addition.grid(row=2,column=3)
-#---------------------------------------------------------------------------------------------
-btn4=Button(f2,padx=16,pady=16,bd=4, fg="black", font=('ariel', 20 ,'bold'),text="4",bg="powder blue", command=lambda: btnclick(4) )
-btn4.grid(row=3,column=0)
-
-btn5=Button(f2,padx=16,pady=16,bd=4, fg="black", font=('ariel', 20 ,'bold'),text="5",bg="powder blue", command=lambda: btnclick(5) )
-btn5.grid(row=3,column=1)
-
-btn6=Button(f2,padx=16,pady=16,bd=4, fg="black", font=('ariel', 20 ,'bold'),text="6",bg="powder blue", command=lambda: btnclick(6) )
-btn6.grid(row=3,column=2)
-
-Substraction=Button(f2,padx=16,pady=16,bd=4, fg="black", font=('ariel', 20 ,'bold'),text="-",bg="powder blue", command=lambda: btnclick("-") )
-Substraction.grid(row=3,column=3)
-#-----------------------------------------------------------------------------------------------
-btn1=Button(f2,padx=16,pady=16,bd=4, fg="black", font=('ariel', 20 ,'bold'),text="1",bg="powder blue", command=lambda: btnclick(1) )
-btn1.grid(row=4,column=0)
-
-btn2=Button(f2,padx=16,pady=16,bd=4, fg="black", font=('ariel', 20 ,'bold'),text="2",bg="powder blue", command=lambda: btnclick(2) )
-btn2.grid(row=4,column=1)
-
-btn3=Button(f2,padx=16,pady=16,bd=4, fg="black", font=('ariel', 20 ,'bold'),text="3",bg="powder blue", command=lambda: btnclick(3) )
-btn3.grid(row=4,column=2)
-
-multiply=Button(f2,padx=16,pady=16,bd=4, fg="black", font=('ariel', 20 ,'bold'),text="*",bg="powder blue", command=lambda: btnclick("*") )
-multiply.grid(row=4,column=3)
-#------------------------------------------------------------------------------------------------
-btn0=Button(f2,padx=16,pady=16,bd=4, fg="black", font=('ariel', 20 ,'bold'),text="0",bg="powder blue", command=lambda: btnclick(0) )
-btn0.grid(row=5,column=0)
-
-btnc=Button(f2,padx=16,pady=16,bd=4, fg="black", font=('ariel', 20 ,'bold'),text="c",bg="powder blue", command=clrdisplay)
-btnc.grid(row=5,column=1)
-
-btnequal=Button(f2,padx=16,pady=16,bd=4,width = 16, fg="black", font=('ariel', 20 ,'bold'),text="=",bg="powder blue",command=eqals)
-btnequal.grid(columnspan=4)
-
-Decimal=Button(f2,padx=16,pady=16,bd=4, fg="black", font=('ariel', 20 ,'bold'),text=".",bg="powder blue", command=lambda: btnclick(".") )
-Decimal.grid(row=5,column=2)
-
-Division=Button(f2,padx=16,pady=16,bd=4, fg="black", font=('ariel', 20 ,'bold'),text="/",bg="powder blue", command=lambda: btnclick("/") )
-Division.grid(row=5,column=3)
-status = Label(f2,font=('aria', 15, 'bold'),width = 16, text="-By lovisha",bd=2,relief=SUNKEN)
-status.grid(row=7,columnspan=3)
-
-#---------------------------------------------------------------------------------------
-rand = StringVar()
-Fries = StringVar()
-Largefries = StringVar()
-Burger = StringVar()
-Filet = StringVar()
-Subtotal = StringVar()
-Total = StringVar()
-Service_Charge = StringVar()
-Drinks = StringVar()
-Tax = StringVar()
-cost = StringVar()
-Cheese_burger = StringVar()
-
-
-lblreference = Label(f1, font=( 'aria' ,16, 'bold' ),text="Order No.",fg="steel blue",bd=10,anchor='w')
-lblreference.grid(row=0,column=0)
-txtreference = Entry(f1,font=('ariel' ,16,'bold'), textvariable=rand , bd=6,insertwidth=4,bg="powder blue" ,justify='right')
-txtreference.grid(row=0,column=1)
-
-lblfries = Label(f1, font=( 'aria' ,16, 'bold' ),text="Fries Meal",fg="steel blue",bd=10,anchor='w')
-lblfries.grid(row=1,column=0)
-txtfries = Entry(f1,font=('ariel' ,16,'bold'), textvariable=Fries , bd=6,insertwidth=4,bg="powder blue" ,justify='right')
-txtfries.grid(row=1,column=1)
-
-lblLargefries = Label(f1, font=( 'aria' ,16, 'bold' ),text="Lunch Meal",fg="steel blue",bd=10,anchor='w')
-lblLargefries.grid(row=2,column=0)
-txtLargefries = Entry(f1,font=('ariel' ,16,'bold'), textvariable=Largefries , bd=6,insertwidth=4,bg="powder blue" ,justify='right')
-txtLargefries.grid(row=2,column=1)
-
-
-lblburger = Label(f1, font=( 'aria' ,16, 'bold' ),text="Burger Meal",fg="steel blue",bd=10,anchor='w')
-lblburger.grid(row=3,column=0)
-txtburger = Entry(f1,font=('ariel' ,16,'bold'), textvariable=Burger , bd=6,insertwidth=4,bg="powder blue" ,justify='right')
-txtburger.grid(row=3,column=1)
-
-lblFilet = Label(f1, font=( 'aria' ,16, 'bold' ),text="Pizza Meal",fg="steel blue",bd=10,anchor='w')
-lblFilet.grid(row=4,column=0)
-txtFilet = Entry(f1,font=('ariel' ,16,'bold'), textvariable=Filet , bd=6,insertwidth=4,bg="powder blue" ,justify='right')
-txtFilet.grid(row=4,column=1)
-
-lblCheese_burger = Label(f1, font=( 'aria' ,16, 'bold' ),text="Cheese burger",fg="steel blue",bd=10,anchor='w')
-lblCheese_burger.grid(row=5,column=0)
-txtCheese_burger = Entry(f1,font=('ariel' ,16,'bold'), textvariable=Cheese_burger , bd=6,insertwidth=4,bg="powder blue" ,justify='right')
-txtCheese_burger.grid(row=5,column=1)
-
-#--------------------------------------------------------------------------------------
-lblDrinks = Label(f1, font=( 'aria' ,16, 'bold' ),text="Drinks",fg="steel blue",bd=10,anchor='w')
-lblDrinks.grid(row=0,column=2)
-txtDrinks = Entry(f1,font=('ariel' ,16,'bold'), textvariable=Drinks , bd=6,insertwidth=4,bg="powder blue" ,justify='right')
-txtDrinks.grid(row=0,column=3)
-
-lblcost = Label(f1, font=( 'aria' ,16, 'bold' ),text="cost",fg="steel blue",bd=10,anchor='w')
-lblcost.grid(row=1,column=2)
-txtcost = Entry(f1,font=('ariel' ,16,'bold'), textvariable=cost , bd=6,insertwidth=4,bg="powder blue" ,justify='right')
-txtcost.grid(row=1,column=3)
-
-lblService_Charge = Label(f1, font=( 'aria' ,16, 'bold' ),text="Service Charge",fg="steel blue",bd=10,anchor='w')
-lblService_Charge.grid(row=2,column=2)
-txtService_Charge = Entry(f1,font=('ariel' ,16,'bold'), textvariable=Service_Charge , bd=6,insertwidth=4,bg="powder blue" ,justify='right')
-txtService_Charge.grid(row=2,column=3)
-
-lblTax = Label(f1, font=( 'aria' ,16, 'bold' ),text="Tax",fg="steel blue",bd=10,anchor='w')
-lblTax.grid(row=3,column=2)
-txtTax = Entry(f1,font=('ariel' ,16,'bold'), textvariable=Tax , bd=6,insertwidth=4,bg="powder blue" ,justify='right')
-txtTax.grid(row=3,column=3)
-
-lblSubtotal = Label(f1, font=( 'aria' ,16, 'bold' ),text="Subtotal",fg="steel blue",bd=10,anchor='w')
-lblSubtotal.grid(row=4,column=2)
-txtSubtotal = Entry(f1,font=('ariel' ,16,'bold'), textvariable=Subtotal , bd=6,insertwidth=4,bg="powder blue" ,justify='right')
-txtSubtotal.grid(row=4,column=3)
-
-lblTotal = Label(f1, font=( 'aria' ,16, 'bold' ),text="Total",fg="steel blue",bd=10,anchor='w')
-lblTotal.grid(row=5,column=2)
-txtTotal = Entry(f1,font=('ariel' ,16,'bold'), textvariable=Total , bd=6,insertwidth=4,bg="powder blue" ,justify='right')
-txtTotal.grid(row=5,column=3)
-
-#-----------------------------------------buttons------------------------------------------
-lblTotal = Label(f1,text="---------------------",fg="white")
-lblTotal.grid(row=6,columnspan=3)
-
-btnTotal=Button(f1,padx=16,pady=8, bd=10 ,fg="black",font=('ariel' ,16,'bold'),width=10, text="TOTAL", bg="powder blue",command=Ref)
-btnTotal.grid(row=7, column=1)
-
-btnreset=Button(f1,padx=16,pady=8, bd=10 ,fg="black",font=('ariel' ,16,'bold'),width=10, text="RESET", bg="powder blue",command=reset)
-btnreset.grid(row=7, column=2)
-
-btnexit=Button(f1,padx=16,pady=8, bd=10 ,fg="black",font=('ariel' ,16,'bold'),width=10, text="EXIT", bg="powder blue",command=qexit)
-btnexit.grid(row=7, column=3)
-
+#price list GUI
 def price():
-    roo = Tk()
-    roo.geometry("600x220+0+0")
-    roo.title("Price List")
-    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="ITEM", fg="black", bd=5)
-    lblinfo.grid(row=0, column=0)
-    lblinfo = Label(roo, font=('aria', 15,'bold'), text="_____________", fg="white", anchor=W)
-    lblinfo.grid(row=0, column=2)
-    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="PRICE", fg="black", anchor=W)
-    lblinfo.grid(row=0, column=3)
-    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="Fries Meal", fg="steel blue", anchor=W)
-    lblinfo.grid(row=1, column=0)
-    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="25", fg="steel blue", anchor=W)
-    lblinfo.grid(row=1, column=3)
-    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="Lunch Meal", fg="steel blue", anchor=W)
-    lblinfo.grid(row=2, column=0)
-    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="40", fg="steel blue", anchor=W)
-    lblinfo.grid(row=2, column=3)
-    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="Burger Meal", fg="steel blue", anchor=W)
-    lblinfo.grid(row=3, column=0)
-    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="35", fg="steel blue", anchor=W)
-    lblinfo.grid(row=3, column=3)
-    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="Pizza Meal", fg="steel blue", anchor=W)
-    lblinfo.grid(row=4, column=0)
-    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="50", fg="steel blue", anchor=W)
-    lblinfo.grid(row=4, column=3)
-    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="Cheese Burger", fg="steel blue", anchor=W)
-    lblinfo.grid(row=5, column=0)
-    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="30", fg="steel blue", anchor=W)
-    lblinfo.grid(row=5, column=3)
-    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="Drinks", fg="steel blue", anchor=W)
-    lblinfo.grid(row=6, column=0)
-    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="35", fg="steel blue", anchor=W)
-    lblinfo.grid(row=6, column=3)
+    master = Tk()
+    master.geometry("550x650")
+    master.title("Price List")
+    f1 = Frame(master)
+    f1.pack(side=TOP)
+    x = Label(f1, text="PRICE LIST\n",font=("comic sans ms","15","underline","bold"),fg="black")
+    x.pack()
 
-    roo.mainloop()
+    f2 = Frame(master)
+    f2.pack(side=LEFT)
+    a1 = Label(f2, text="ITEMS\n",font=("comic sans ms","10","underline"),fg="black")
+    a1.pack()
+    a = Label(f2, text="FRIES MEAL\n\nLUNCH MEAL\n\nBURGER MEAL\n\nPIZZA MEAL\n\nCHESSE BURGER\n\nDRINKS\n\nMEAL 1-\nFRIES MEAL+BURGER MEAL+DRINKS\n\nMEAL 2-\nPIZZA MEAL+CHESSE BURGER+DRINKS",font=("comic sans ms","15"),fg="black")
+    a.pack()
 
-btnprice=Button(f1,padx=16,pady=8, bd=10 ,fg="black",font=('ariel' ,16,'bold'),width=10, text="PRICE", bg="powder blue",command=price)
-btnprice.grid(row=7, column=0)
+    f3 = Frame(master)
+    f3.pack(side=RIGHT)
+    b1 = Label(f3, text="PRICE\n",font=("comic sans ms","10","underline"),fg="black")
+    b1.pack()
+    b = Label(f3, text="Rs 100\n\nRs 230\n\nRs 155\n\nRs 440\n\nRs 150\n\nRs 50\n\n\nRs 250\n\n\nRs 500",font=("comic sans ms","15"),fg="black")
+    b.pack()
 
-root.mainloop()
+    master.mainloop()
+#-------------------------------------------------------------------------------
+
+#assigning values to variables
+ran=StringVar()
+fries=StringVar()
+lunch=StringVar()
+burger=StringVar()
+pizza=StringVar()
+cheese_burger=StringVar()
+drinks=StringVar()
+meal_1=StringVar()
+meal_2=StringVar()
+cost=StringVar()
+service=StringVar()
+tax=StringVar()
+sub_total=StringVar()
+final=StringVar()
+
+#use of class for calculations
+class Calculate:
+    def price(self,e2,e3,e4,e5,e6,e7,m1,m2):
+        a = float(e2.get())
+        b = float(e3.get())
+        c = float(e4.get())
+        d = float(e5.get())
+        e = float(e6.get())
+        f = float(e7.get())
+        g = float(m1.get())
+        h = float(m2.get())
+        costoffries=a*100
+        costoflunch=b*230
+        costofburger=c*155
+        costofpizza=d*440
+        costofchesseburger=e*150
+        costofdrinks=f*50
+        costofmeal1=g*250
+        costofmeal2=h*500
+        costofmeal = str(int(a) * 100 + int(b) * 230 + int(c) * 155 + int(d) * 440 + int(e) * 150 + int(f) * 50 + int(g) * 250 + int(h) *500)
+        charge = str((int(a) * 100 + int(b) * 230 + int(c) * 155 + int(d) * 440 + int(e) * 150 + int(f) * 50 + int(g) * 250 + int(h) *500) / 99)
+        pay = str((int(a) * 100 + int(b) * 230 + int(c) * 155 + int(d) * 440 + int(e) * 150 + int(f) * 50 + int(g) * 250 + int(h) *500) * 0.10)
+        subtotal=str(int(a) * 100 + int(b) * 230 + int(c) * 155 + int(d) * 440 + int(e) * 150 + int(f) * 50 + int(g) * 250 + int(h) *500)
+        tt = str(float(costofmeal) + float(charge) + float(pay))
+        cost.set(costofmeal)
+        service.set(charge)
+        tax.set(pay)
+        sub_total.set(subtotal)
+        final.set(tt)
+        table.execute("INSERT INTO ORDERS(FRIES_MEAL,LUNCH_MEAL,BURGER_MEAL,PIZZA_MEAL,CHEESE_BURGER,DRINKS,MEAL_1,MEAL_2,COST,SERVICE_CHARGE,TAX,SUBTOTAL,TOTAL)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)",(str(costoffries),str(costoflunch),str(costofburger),str(costofpizza),str(costofchesseburger),str(costofdrinks),str(costofmeal1),str(costofmeal2),str(costofmeal),str(charge),str(pay),str(subtotal),str(tt),))
+        table.commit()
+        messagebox.showinfo("Success", "Bill Successfully Saved..")
+        for row in table.execute("SELECT * FROM ORDERS"):
+            print(row)
+
+
+def amount():
+    c=Calculate()
+    c.price(e2,e3,e4,e5,e6,e7,m1,m2)
+#------------------------------------------------------------------------
+
+
+#order number
+x=random.randint(1,500)
+order=str(x)
+ran.set(order)
+#----------------------------------------------------------------
+
+
+#giving default values to different variables
+fries.set(0.0)
+lunch.set(0.0)
+burger.set(0.0)
+pizza.set(0.0)
+cheese_burger.set(0.0)
+drinks.set(0.0)
+meal_1.set(0.0)
+meal_2.set(0.0)
+#----------------------------------------------------------------
+
+
+
+#function to reset all values
+def reset():
+    ran.set(int(order)+1)
+    fries.set(0.0)
+    lunch.set(0.0)
+    burger.set(0.0)
+    pizza.set(0.0)
+    cheese_burger.set(0.0)
+    drinks.set(0.0)
+    meal_1.set(0.0)
+    meal_2.set(0.0)
+    cost.set(0.0)
+    service.set(0.0)
+    tax.set(0.0)
+    final.set(0.0)
+
+#------------------------------------------------------------------------
+
+#main window GUI representation
+frame1=Frame(root)
+frame1.pack(side=TOP)
+x=Label(frame1,text="CHATAR-PATAR",font=("comic sans ms",'30',"bold","underline"),fg="black",bd=10,anchor=W)
+x.grid(row=0,column=0)
+
+localtime=time.asctime(time.localtime(time.time()))
+time=Label(frame1,text=localtime,font=("comic sans ms","20","bold","italic"),fg="black",anchor=W)
+time.grid(row=1,column=0)
+#-----------------------------------------
+
+frame2=Frame(root)
+frame2.pack(side=LEFT)
+
+lbl1=Label(frame2,text="Order No.",font=("comic sans ms","15"),fg="black")
+lbl1.grid(row=0)
+e1=Entry(frame2,textvariable=ran,font=("comic sans ms","15"),fg="black")
+e1.grid(row=0,column=1)
+
+lbl2=Label(frame2,text="Fries Meal",font=("comic sans ms","15"),fg="black")
+lbl2.grid(row=1)
+e2=Entry(frame2,textvariable=fries,font=("comic sans ms","15"),fg="black")
+e2.grid(row=1,column=1)
+
+lbl3=Label(frame2,text="Lunch Meal",font=("comic sans ms","15"),fg="black")
+lbl3.grid(row=2)
+e3=Entry(frame2,textvariable=lunch,font=("comic sans ms","15"),fg="black")
+e3.grid(row=2,column=1)
+
+lbl4=Label(frame2,text="Burger Meal",font=("comic sans ms","15"),fg="black")
+lbl4.grid(row=3)
+e4=Entry(frame2,textvariable=burger,font=("comic sans ms","15"),fg="black")
+e4.grid(row=3,column=1)
+
+lbl5=Label(frame2,text="Pizza Meal",font=("comic sans ms","15"),fg="black")
+lbl5.grid(row=4)
+e5=Entry(frame2,textvariable=pizza,font=("comic sans ms","15"),fg="black")
+e5.grid(row=4,column=1)
+
+lbl6=Label(frame2,text="Cheese Burger",font=("comic sans ms","15"),fg="black")
+lbl6.grid(row=5)
+e6=Entry(frame2,textvariable=cheese_burger,font=("comic sans ms","15"),fg="black")
+e6.grid(row=5,column=1)
+
+meal1=Label(frame2,text="Meal 1",font=("comic sans ms","15"),fg="black")
+meal1.grid(row=6)
+m1=Entry(frame2,textvariable=meal_1,font=("comic sans ms","15"),fg="black")
+m1.grid(row=6,column=1)
+#------------------------------------
+
+frame3=Frame(root)
+frame3.pack(side=RIGHT)
+
+meal2=Label(frame3,text="Meal 2",font=("comic sans ms","15"),fg="black")
+meal2.grid(row=0)
+m2=Entry(frame3,textvariable=meal_2,font=("comic sans ms","15"),fg="black")
+m2.grid(row=0,column=1)
+
+lbl7=Label(frame3,text="Drinks",font=("comic sans ms","15"),fg="black")
+lbl7.grid(row=1)
+e7=Entry(frame3,textvariable=drinks,font=("comic sans ms","15"),fg="black")
+e7.grid(row=1,column=1)
+
+lbl8=Label(frame3,text="Cost",font=("comic sans ms","15"),fg="black")
+lbl8.grid(row=2)
+e8=Entry(frame3,textvariable=cost,font=("comic sans ms","15"),fg="black")
+e8.grid(row=2,column=1)
+
+lbl9=Label(frame3,text="Service Charge",font=("comic sans ms","15"),fg="black")
+lbl9.grid(row=3)
+e9=Entry(frame3,textvariable=service,font=("comic sans ms","15"),fg="black")
+e9.grid(row=3,column=1)
+
+lbl10=Label(frame3,text="Tax",font=("comic sans ms","15"),fg="black")
+lbl10.grid(row=4)
+e10=Entry(frame3,textvariable=tax,font=("comic sans ms","15"),fg="black")
+e10.grid(row=4,column=1)
+
+lbl11=Label(frame3,text="Subtotal",font=("comic sans ms","15"),fg="black")
+lbl11.grid(row=5)
+e11=Entry(frame3,textvariable=cost,font=("comic sans ms","15"),fg="black")
+e11.grid(row=5,column=1)
+
+lbl12=Label(frame3,text="Total",font=("comic sans ms","15"),fg="black")
+lbl12.grid(row=6)
+e12=Entry(frame3,textvariable=final,font=("comic sans ms","15"),fg="black")
+e12.grid(row=6,column=1)
+
+
+#------------------------------------------------------------------
+
+#buttons and their working
+frame4=Frame(root)
+frame4.pack(side=BOTTOM)
+price=Button(frame4,text="price",height=3,width=10,font=("comic sans ms","11"),fg="black",command=price)
+price.grid(row=0,column=0,padx=10,pady=10)
+total=Button(frame4,text="total",height=3,width=10,font=("comic sans ms","11"),fg="black",command=amount)
+total.grid(row=0,column=5,padx=10,pady=10)
+reset=Button(frame4,text="reset",height=3,width=10,font=("comic sans ms","11"),fg="black",command=reset)
+reset.grid(row=0,column=10,padx=10,pady=10)
+exit=Button(frame4,text="exit",height=3,width=10,font=("comic sans ms","11"),fg="black",command=quit)
+exit.grid(row=0,column=15,padx=10,pady=10)
+
+#--------------------------------------------------------
+
+#end of mainloop
+mainloop()
